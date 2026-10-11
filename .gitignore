@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 环境与密钥
+.env
+.env.*
+
+# 个人数据（会话存档、全局记忆、任务状态）
+sessions/
+user_memory.md
+.mini-harness-todo.json
+
+# IDE
+.idea/
+.vscode/
