@@ -1,0 +1,27 @@
+model:
+  provider: openai
+  name: deepseek-flash
+  temperature: 0.3
+  max_tokens: 65536
+
+models:
+  - name: deepseek-flash
+    api_key_env: OPENAI_API_KEY
+    base_url: https://api.deepseek.com
+  - name: deepseek-v4-pro
+    api_key_env: OPENAI_API_KEY
+    base_url: https://api.deepseek.com
+
+openai:
+  api_key_env: OPENAI_API_KEY
+  base_url: https://api.deepseek.com
+
+serpapi:
+  api_key_env: SERPAPI_API_KEY
+
+agent:
+  max_iterations: 50
+  max_context_tokens: 800000
+
+mcp_servers:
+  - "py -3.13 D:\\code\\recite\\erqi\\mini-harness\\test_mcp_server.py"

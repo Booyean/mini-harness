@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 会话存档（对话隐私，不入库；目录本身保留）
+sessions/*.json
+sessions/.*.json
+!sessions/.gitkeep
+
+# 运行时产物
+run_bash.log
+*.log
+
+# 私人数据（用户偏好，不入库）
+user_memory.md
+
+# 工作目录运行时状态（各项目文件夹里的）
+.mini-harness-todo.json
+.mini-harness.md
+.mini-harness-notes.jsonl
+.mini-harness-kb/
+
+# 诊断/临时
+diag_*.py
+diag_*.log
+read_session_tmp.py
