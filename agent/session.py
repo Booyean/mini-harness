@@ -41,6 +41,7 @@ def sanitize_messages(messages):
 
 
 def save_session(session_id, messages, model, title=None, todo_snapshot=None):
+    os.makedirs(SESSIONS_DIR, exist_ok=True)
     data = {
         "session_id": session_id,
         "model": model,
