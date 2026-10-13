@@ -7,6 +7,7 @@ from tools import (
     shell,
     subagent,
     todo,
+    vision,
 )
 
 TOOL_EXECUTORS = {
@@ -24,6 +25,8 @@ TOOL_EXECUTORS = {
     "run_subtask": subagent.execute_run_subtask,
     "ask_user": ask_user.execute_ask_user,
     "download_file": download.execute_download_file,
+    "read_image": vision.execute_read_image,
+    "ocr_image": vision.execute_ocr_image,
 }
 
 
@@ -52,6 +55,8 @@ def get_tool_schemas():
         subagent.RUN_SUBTASK_TOOL,
         ask_user.ASK_USER_TOOL,
         download.DOWNLOAD_TOOL,
+        vision.READ_IMAGE_TOOL,
+        vision.OCR_IMAGE_TOOL,
     ] + _dynamic_schemas
 
 

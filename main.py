@@ -15,7 +15,7 @@ from agent.session import (
     save_session,
 )
 from model.client import Client
-from tools import mcp, registry, subagent, todo
+from tools import mcp, registry, subagent, todo, vision
 from tools.filesystem import _safe_path, set_work_dir
 from ui import tui
 
@@ -27,7 +27,8 @@ SYSTEM_PROMPT = (
     "读文件（read_file）、创建或覆盖文件（write_file）、"
     "修改文件某一行（edit_file）、执行 shell 命令（run_bash）、"
     "联网搜索（web_search）、维护任务清单（update_todo）、"
-    "派生子代理执行独立子任务（run_subtask）。"
+    "派生子代理执行独立子任务（run_subtask）、"
+    "查看图片（read_image，整图理解）或提取图中文字（ocr_image，更省）。"
     "规则：需要操作文件或执行命令时，必须直接调用对应工具，"
     "不要只输出计划或承诺性文字（如“我这就动手”）。"
     "交互规则：调用工具前先输出一句话说明当前意图（简短，20 字内）；"
@@ -131,11 +132,7 @@ MEMORY_PROMPT = (
 )
 
 
-DS_SAFETY_PATTERN = re.compile(r"<ds_safety>.*?</ds_safety>\s*\w*", re.S)
-
-
-def clean_output(text):
-    return DS_SAFETY_PATTERN.sub("", text).strip()
+from agent.context import clean_output
 
 
 def extract_preferences(client, user_msg, assistant_content):
@@ -272,6 +269,7 @@ def main():
 
     client = build_client(first_model, fallback_key_env, fallback_base_url)
     subagent.set_client(client)
+    vision.set_client(client)
 
     for server_cmd in config.get("mcp_servers", []):
         servers = mcp.load_servers([server_cmd])

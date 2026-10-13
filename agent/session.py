@@ -19,6 +19,22 @@ def tmp_session_path(session_id):
     return os.path.join(SESSIONS_DIR, f".tmp_{session_id}.json")
 
 
+def _strip_images(messages):
+    for m in messages:
+        content = m.get("content")
+        if isinstance(content, list):
+            new_content = []
+            for c in content:
+                if c.get("type") == "image_url":
+                    new_content.append(
+                        {"type": "text", "text": "[历史图片已移除]"}
+                    )
+                else:
+                    new_content.append(c)
+            m["content"] = new_content
+    return messages
+
+
 def sanitize_messages(messages):
     cleaned = []
     i = 0
@@ -37,7 +53,7 @@ def sanitize_messages(messages):
             continue
         cleaned.append(m)
         i += 1
-    return cleaned
+    return _strip_images(cleaned)
 
 
 def save_session(session_id, messages, model, title=None, todo_snapshot=None):

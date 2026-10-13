@@ -9,6 +9,8 @@ READONLY_TOOLS = {
     "webfetch",
     "update_todo",
     "ask_user",
+    "read_image",
+    "ocr_image",
 }
 
 _session_rules = {}

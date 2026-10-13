@@ -18,6 +18,40 @@ def _read_file_content(path_str):
         return f.read()
 
 
+def _strip_history_images(msgs):
+    last_img_idx = None
+    for i in range(len(msgs) - 1, -1, -1):
+        content = msgs[i].get("content")
+        if isinstance(content, list) and any(
+            c.get("type") == "image_url" for c in content
+        ):
+            last_img_idx = i
+            break
+
+    stripped = []
+    for i, m in enumerate(msgs):
+        content = m.get("content")
+        if isinstance(content, list):
+            keep = i == last_img_idx
+            new_content = []
+            for c in content:
+                if c.get("type") == "image_url" and not keep:
+                    new_content.append(
+                        {
+                            "type": "text",
+                            "text": "[图片已卸载，需要时用 read_image 重新加载]",
+                        }
+                    )
+                else:
+                    new_content.append(c)
+            m2 = dict(m)
+            m2["content"] = new_content
+            stripped.append(m2)
+        else:
+            stripped.append(m)
+    return stripped
+
+
 def _compact(client, messages_to_summarize, temperature=0.3):
     response = client.chat(
         [
@@ -102,7 +136,7 @@ def run_loop(
             retry_temp = temperature + 0.5 if stall_count > 0 else temperature
 
             todo_text = todo.format_todos(todo.load_todos())
-            call_messages = messages + [
+            call_messages = _strip_history_images(messages) + [
                 {
                     "role": "system",
                     "content": f"当前任务清单：\n{todo_text}\n"
@@ -219,6 +253,7 @@ def run_loop(
                 bus.emit("text", content="用户中止了任务。\n")
                 return "用户中止了任务", i + 1
 
+            pending_images = []
             for tc, (name, args), allowed in zip(
                 final["tool_calls"], tool_infos, decisions
             ):
@@ -228,6 +263,21 @@ def run_loop(
                     result = registry.execute_tool(name, args)
                 else:
                     result = "用户拒绝了此操作"
+
+                if name == "read_image" and result.startswith('{"__image__"'):
+                    try:
+                        img_info = json.loads(result)
+                        messages.append(
+                            {
+                                "role": "tool",
+                                "tool_call_id": tc["id"],
+                                "content": f"图像已加载：{img_info['path']}",
+                            }
+                        )
+                        pending_images.append(img_info)
+                        continue
+                    except json.JSONDecodeError:
+                        pass
 
                 new_text = _read_file_content(str(args.get("path", "")))
 
@@ -256,6 +306,23 @@ def run_loop(
                         "role": "tool",
                         "tool_call_id": tc["id"],
                         "content": result,
+                    }
+                )
+
+            for img_info in pending_images:
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": f"[read_image 结果：{img_info['path']}] 请观察图片内容并回答",
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {"url": img_info["data_uri"]},
+                            },
+                        ],
                     }
                 )
             continue

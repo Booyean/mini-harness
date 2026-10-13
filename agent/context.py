@@ -1,8 +1,15 @@
 import json
+import re
 
 import tiktoken
 
 DEFAULT_ENCODING = "cl100k_base"
+
+DS_SAFETY_PATTERN = re.compile(r"<ds_safety>.*?</ds_safety>\s*\w*", re.S)
+
+
+def clean_output(text):
+    return DS_SAFETY_PATTERN.sub("", text).strip()
 
 
 def count_tokens(text, encoding_name=DEFAULT_ENCODING):
@@ -15,6 +22,14 @@ def build_chatml(messages):
     for msg in messages:
         role = msg["role"]
         content = msg.get("content") or ""
+        if isinstance(content, list):
+            text_parts = []
+            for c in content:
+                if c.get("type") == "text":
+                    text_parts.append(c.get("text", ""))
+                elif c.get("type") == "image_url":
+                    text_parts.append("[图片]")
+            content = " ".join(text_parts)
         if msg.get("tool_calls"):
             content += json.dumps(msg["tool_calls"], ensure_ascii=False)
         parts.append(f"<|im_start|>{role}\n{content}<|im_end|>")
