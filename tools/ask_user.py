@@ -2,8 +2,7 @@ ASK_USER_TOOL = {
     "type": "function",
     "function": {
         "name": "ask_user",
-        "description": "遇到歧义或需要用户决策时提问。"
-        "会暂停执行，等待用户回答后继续。不要用它问可以自己判断的问题",
+        "description": "遇到歧义需用户决策时提问，暂停等待回答。不要问可自行判断的问题",
         "parameters": {
             "type": "object",
             "properties": {

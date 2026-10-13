@@ -25,3 +25,4 @@ user_memory.md
 diag_*.py
 diag_*.log
 read_session_tmp.py
+_vision_test*.png

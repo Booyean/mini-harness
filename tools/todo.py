@@ -11,9 +11,7 @@ UPDATE_TODO_TOOL = {
     "type": "function",
     "function": {
         "name": "update_todo",
-        "description": "更新任务清单。处理多步骤任务时用它记录进度。"
-        "支持两层结构：主任务可包含子任务（subtasks）。"
-        "大任务拆成主任务+子任务，每完成一步就更新状态，防止遗忘",
+        "description": "更新任务清单。多步任务用它记录进度，支持主任务+子任务两层结构，每完成一步更新状态",
         "parameters": {
             "type": "object",
             "properties": {
@@ -29,7 +27,7 @@ UPDATE_TODO_TOOL = {
                             "status": {
                                 "type": "string",
                                 "enum": ["pending", "in_progress", "completed"],
-                                "description": "任务状态（有子任务时由子任务状态自动推导）",
+                                "description": "任务状态（有子任务时自动推导）",
                             },
                             "subtasks": {
                                 "type": "array",
@@ -52,7 +50,7 @@ UPDATE_TODO_TOOL = {
                         },
                         "required": ["content", "status"],
                     },
-                    "description": "完整的任务清单（会整体覆盖旧清单）",
+                    "description": "完整任务清单（整体覆盖旧清单）",
                 }
             },
             "required": ["todos"],

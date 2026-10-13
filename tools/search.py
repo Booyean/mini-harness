@@ -13,7 +13,7 @@ WEBFETCH_TOOL = {
     "type": "function",
     "function": {
         "name": "webfetch",
-        "description": "读取网页内容并转换为纯文本。用于查看网页文档、在线文章、API 文档",
+        "description": "读取网页内容转纯文本",
         "parameters": {
             "type": "object",
             "properties": {
@@ -31,8 +31,7 @@ GREP_TOOL = {
     "type": "function",
     "function": {
         "name": "grep",
-        "description": "在项目文件中搜索匹配的文本。返回文件路径、行号和匹配行。"
-        "用于查找函数定义、变量引用、配置项等。支持正则表达式",
+        "description": "在项目中搜索文本（支持正则），返回文件路径、行号和匹配行",
         "parameters": {
             "type": "object",
             "properties": {
@@ -58,7 +57,7 @@ WEB_SEARCH_TOOL = {
     "type": "function",
     "function": {
         "name": "web_search",
-        "description": "用 Google 搜索网页，返回相关结果的标题、链接和摘要。用于查询事实、最新信息、百科知识等",
+        "description": "搜索网页，返回结果的标题、链接和摘要",
         "parameters": {
             "type": "object",
             "properties": {

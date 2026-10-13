@@ -10,9 +10,7 @@ DOWNLOAD_TOOL = {
     "type": "function",
     "function": {
         "name": "download_file",
-        "description": "从 URL 下载文件到工作目录。zip/tar.gz 压缩包会自动解压。"
-        "用于获取 GitHub 项目（用 .../archive/refs/heads/main.zip 格式的链接）、"
-        "下载依赖文件等",
+        "description": "从 URL 下载文件到工作目录，zip/tar.gz 自动解压",
         "parameters": {
             "type": "object",
             "properties": {

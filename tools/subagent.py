@@ -11,10 +11,8 @@ RUN_SUBTASK_TOOL = {
     "type": "function",
     "function": {
         "name": "run_subtask",
-        "description": "把独立的子任务交给子代理处理。"
-        "子代理用全新的干净上下文执行，完成后返回结果摘要。"
-        "适合：需要读很多文件、做多步操作的独立子任务，"
-        "避免主对话上下文被细节撑爆",
+        "description": "把独立子任务交给子代理（干净上下文执行），完成后返回结果摘要。"
+        "适合需读多文件的多步子任务，避免主上下文被细节撑爆",
         "parameters": {
             "type": "object",
             "properties": {

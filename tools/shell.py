@@ -42,7 +42,7 @@ RUN_BASH_TOOL = {
     "type": "function",
     "function": {
         "name": "run_bash",
-        "description": "执行 shell 命令并返回输出。用于列目录、运行脚本、查看版本等操作",
+        "description": "执行 shell 命令并返回输出（Windows cmd 语法）",
         "parameters": {
             "type": "object",
             "properties": {

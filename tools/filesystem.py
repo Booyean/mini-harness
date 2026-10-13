@@ -14,8 +14,7 @@ READ_FILE_TOOL = {
     "type": "function",
     "function": {
         "name": "read_file",
-        "description": "分段读取文件内容，返回带行号的文本。默认从第 1 行读 150 行；"
-        "文件很长时，用 offset 参数继续读取后续部分",
+        "description": "分段读取文件，返回带行号文本。默认读前 150 行，文件很长时用 offset 续读",
         "parameters": {
             "type": "object",
             "properties": {
@@ -41,8 +40,7 @@ LIST_FILES_TOOL = {
     "type": "function",
     "function": {
         "name": "list_files",
-        "description": "列出目录中的文件和子目录名。用于了解项目结构，"
-        "不显示文件内容（看内容用 read_file）",
+        "description": "列出目录中的文件和子目录名（不含文件内容）",
         "parameters": {
             "type": "object",
             "properties": {
@@ -63,8 +61,7 @@ DELETE_FILE_TOOL = {
     "type": "function",
     "function": {
         "name": "delete_file",
-        "description": "删除工作目录内的指定文件（仅单文件，不支持目录）。"
-        "用于清理临时文件、脚本残留",
+        "description": "删除工作目录内指定单文件（不支持目录，隐藏文件受保护）",
         "parameters": {
             "type": "object",
             "properties": {
@@ -104,10 +101,8 @@ EDIT_FILE_TOOL = {
     "type": "function",
     "function": {
         "name": "edit_file",
-        "description": "精确修改文件内容。修改前必须先 read_file。"
-        "首选方式：old_string 提供文件中要替换的原文片段（必须唯一匹配），"
-        "new_string 为新内容。找不到或匹配多处会报错，此时重新读文件再试。"
-        "兼容方式：用 line 行号定位（不推荐，行号可能漂移）",
+        "description": "精确修改文件。修改前必须先 read_file，用 old_string 原文定位（必须唯一匹配），"
+        "找不到或多处匹配会报错。line 行号为兼容模式（不推荐）",
         "parameters": {
             "type": "object",
             "properties": {
@@ -117,7 +112,7 @@ EDIT_FILE_TOOL = {
                 },
                 "old_string": {
                     "type": "string",
-                    "description": "文件中要替换的原文片段（必须与文件内容完全一致且唯一）",
+                    "description": "要替换的原文片段（必须与文件内容完全一致且唯一）",
                 },
                 "new_string": {
                     "type": "string",
@@ -125,11 +120,11 @@ EDIT_FILE_TOOL = {
                 },
                 "line": {
                     "type": "integer",
-                    "description": "兼容模式：要修改的行号（不推荐）",
+                    "description": "兼容模式：要修改的行号",
                 },
                 "content": {
                     "type": "string",
-                    "description": "兼容模式：该行的新内容",
+                    "description": "兼容模式：该行新内容",
                 },
             },
             "required": ["path"],
