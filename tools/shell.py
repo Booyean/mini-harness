@@ -82,6 +82,7 @@ def execute_run_bash(arguments):
         command,
         shell=True,
         cwd=filesystem.WORK_DIR,
+        stdin=subprocess.DEVNULL,
         stdout=out_file,
         stderr=err_file,
     )
@@ -97,6 +98,7 @@ def execute_run_bash(arguments):
             subprocess.run(
                 f"taskkill /F /T /PID {proc.pid}",
                 shell=True,
+                stdin=subprocess.DEVNULL,
                 capture_output=True,
                 timeout=10,
             )
@@ -111,6 +113,7 @@ def execute_run_bash(arguments):
             subprocess.run(
                 f"taskkill /F /T /PID {proc.pid}",
                 shell=True,
+                stdin=subprocess.DEVNULL,
                 capture_output=True,
                 timeout=10,
             )
@@ -144,6 +147,7 @@ def _run_in_background(command):
         command,
         shell=True,
         cwd=filesystem.WORK_DIR,
+        stdin=subprocess.DEVNULL,
         stdout=log,
         stderr=subprocess.STDOUT,
     )
