@@ -250,6 +250,8 @@ def run_loop(
 
             decisions = permissions.check_permissions_batch(tool_infos)
             if decisions is None:
+                if messages and messages[-1].get("tool_calls"):
+                    messages.pop()
                 bus.emit("text", content="用户中止了任务。\n")
                 return "用户中止了任务", i + 1
 
